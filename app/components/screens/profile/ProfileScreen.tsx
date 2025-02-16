@@ -9,37 +9,37 @@ const menuItems = [
     id: 1, 
     title: 'My Orders', 
     icon: 'cart-outline', 
-    component: '../components/screens/modals/OrderModal' 
+    route: '/(modals)/orders'
   },
   { 
     id: 2, 
     title: 'Shipping Addresses', 
     icon: 'location-outline', 
-    component: '../components/screens/modals/ShippingModal' 
+    route: '/(modals)/shipping'
   },
   { 
     id: 3, 
     title: 'Payment Methods', 
     icon: 'card-outline', 
-    component: '../components/screens/modals/PaymentModal' 
+    route: '/(modals)/payment'
   },
   { 
     id: 4, 
     title: 'Wishlist', 
     icon: 'heart-outline', 
-    component: '../components/screens/modals/WishlistModal' 
+    route: '/(modals)/wishlist'
   },
   { 
     id: 5, 
     title: 'Settings', 
     icon: 'settings-outline', 
-    component: '../components/screens/modals/SettingsModal' 
+    route: '/(modals)/settings'
   },
   { 
     id: 6, 
     title: 'Help & Support', 
     icon: 'help-circle-outline', 
-    component: '../components/screens/modals/SupportModal' 
+    route: '/(modals)/support'
   },
 ];
 
@@ -64,7 +64,7 @@ export default function ProfileScreen() {
           {menuItems.map((item) => (
             <Link
               key={item.id}
-              href={item.component}
+              href={item.route}
               asChild
             >
               <Pressable style={styles.menuItem}>

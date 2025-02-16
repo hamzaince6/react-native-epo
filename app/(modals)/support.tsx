@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 // Sample FAQ data
 const faqs = [
@@ -22,12 +23,18 @@ const faqs = [
   },
 ];
 
-export default function SupportScreen() {
+export default function Support() {
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedFaq, setExpandedFaq] = useState(null);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="#1F2937" />
+        </Pressable>
+        <Text style={styles.title}>Help & Support</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           {/* Search Bar */}
@@ -166,6 +173,22 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 16,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  backButton: {
+    marginRight: 12,
+    padding: 4,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1F2937',
   },
   searchContainer: {
     flexDirection: 'row',

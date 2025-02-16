@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
-export default function SettingsScreen() {
+export default function Settings() {
   const [notifications, setNotifications] = useState({
     orderUpdates: true,
     promotions: false,
@@ -33,6 +34,12 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="#1F2937" />
+        </Pressable>
+        <Text style={styles.title}>Settings</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
           {/* Account Section */}
@@ -230,13 +237,13 @@ const styles = StyleSheet.create({
   },
   bentoHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 12,
   },
   iconContainer: {
     width: 40,
     height: 40,
+    marginRight: 12,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
@@ -285,5 +292,21 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#6B7280',
     marginTop: 2,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  backButton: {
+    marginRight: 12,
+    padding: 4,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1F2937',
   },
 });

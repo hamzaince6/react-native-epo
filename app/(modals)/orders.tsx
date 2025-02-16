@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 // Sample order data
 const orders = [
@@ -58,14 +59,16 @@ const orders = [
   },
 ];
 
-export default function OrdersScreen() {
+export default function Orders() {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Orders</Text>
-          <Text style={styles.headerSubtitle}>View and track your orders</Text>
+          <Pressable onPress={() => router.back()} style={styles.backButton}>
+            <Ionicons name="chevron-back" size={24} color="#1F2937" />
+          </Pressable>
+          <Text style={styles.title}>My Orders</Text>
         </View>
 
         {/* Orders Grid */}
@@ -116,17 +119,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
   },
-  headerTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  backButton: {
+    marginRight: 12,
+    padding: 4,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
     color: '#1F2937',
-  },
-  headerSubtitle: {
-    fontSize: 16,
-    color: '#6B7280',
-    marginTop: 4,
   },
   ordersContainer: {
     padding: 20,

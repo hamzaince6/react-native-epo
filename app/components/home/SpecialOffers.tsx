@@ -77,12 +77,12 @@ const styles = StyleSheet.create({
   offerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#fff',
+    color: '#282828',
     marginBottom: 8,
   },
   offerDescription: {
     fontSize: 14,
-    color: '#fff',
+    color: '#282828',
     opacity: 0.8,
     marginBottom: 16,
   },

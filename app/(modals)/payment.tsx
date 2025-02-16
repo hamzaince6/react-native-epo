@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, Pressable, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 // Sample payment methods data
 const paymentMethods = [
@@ -31,7 +32,7 @@ const paymentMethods = [
   },
 ];
 
-export default function PaymentScreen() {
+export default function Payment() {
   const [selectedMethod, setSelectedMethod] = useState(1);
 
   const getCardIcon = (brand) => {
@@ -121,6 +122,12 @@ export default function PaymentScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Pressable onPress={() => router.back()} style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="#1F2937" />
+        </Pressable>
+        <Text style={styles.title}>Payment Methods</Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.methodsContainer}>
           {paymentMethods.map(renderPaymentMethod)}
@@ -141,6 +148,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E5E7EB',
+  },
+  backButton: {
+    marginRight: 12,
+    padding: 4,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#1F2937',
   },
   methodsContainer: {
     padding: 16,

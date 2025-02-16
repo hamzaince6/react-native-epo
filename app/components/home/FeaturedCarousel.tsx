@@ -13,10 +13,10 @@ interface FeaturedProduct {
 }
 
 interface FeaturedCarouselProps {
-  products: FeaturedProduct[];
+  products?: FeaturedProduct[];
 }
 
-export const FeaturedCarousel = ({ products }: FeaturedCarouselProps) => {
+export const FeaturedCarousel = ({ products = [] }: FeaturedCarouselProps) => {
   const renderCarouselItem = ({ item }: { item: FeaturedProduct }) => (
     <View style={styles.carouselItem}>
       <Image source={{ uri: item.image }} style={styles.carouselImage} />
@@ -31,6 +31,10 @@ export const FeaturedCarousel = ({ products }: FeaturedCarouselProps) => {
       </View>
     </View>
   );
+
+  if (products.length === 0) {
+    return null;
+  }
 
   return (
     <View style={styles.carouselContainer}>

@@ -1,221 +1,186 @@
-import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet, Modal } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 // Import components
 import { Header } from '../components/home/Header';
+import { SearchModal } from '../components/modals/SearchModal';
+import { NotificationsModal } from '../components/modals/NotificationsModal';
 import { FeaturedCarousel } from '../components/home/FeaturedCarousel';
 import { Categories } from '../components/home/Categories';
 import { FlashDeals } from '../components/home/FlashDeals';
-import { Newsletter } from '../components/home/Newsletter';
 import { PopularProducts } from '../components/home/PopularProducts';
 import { NewArrivals } from '../components/home/NewArrivals';
 import { SpecialOffers } from '../components/home/SpecialOffers';
+import { Newsletter } from '../components/home/Newsletter';
 import { Footer } from '../components/home/Footer';
 
-// Import modals
-import { SearchModal } from '../components/modals/SearchModal';
-import { NotificationsModal } from '../components/modals/NotificationsModal';
-
+// Sample data
 const featuredProducts = [
   {
-    id: 1,
+    id: '1',
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
-    title: 'Nike Air Max',
-    price: '$129',
+    title: 'Premium Comfort Sneakers',
+    price: '$129.99',
     discount: '20% OFF',
   },
   {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
-    title: 'Wireless Headphones',
-    price: '$199',
+    id: '2',
+    image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772',
+    title: 'Running Shoes',
+    price: '$89.99',
     discount: '15% OFF',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f',
-    title: 'Camera Lens',
-    price: '$499',
-    discount: '10% OFF',
   },
 ];
 
 const categories = [
-  { id: 1, name: 'Electronics', icon: 'phone-portrait-outline', count: '2,145 items' },
-  { id: 2, name: 'Fashion', icon: 'shirt-outline', count: '3,890 items' },
-  { id: 3, name: 'Home', icon: 'home-outline', count: '1,672 items' },
-  { id: 4, name: 'Beauty', icon: 'color-palette-outline', count: '925 items' },
+  { id: '1', name: 'Sneakers', icon: 'footsteps', image: 'https://images.unsplash.com/photo-1552346154-21d32810aba3' },
+  { id: '2', name: 'Running', icon: 'bicycle', image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a' },
+  { id: '3', name: 'Basketball', icon: 'basketball', image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc' },
 ];
 
 const flashDeals = [
   {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12',
-    title: 'Smart Watch',
-    price: '$99',
-    originalPrice: '$149',
+    id: '1',
+    image: 'https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb',
+    title: 'Limited Edition Sneakers',
+    price: '$79.99',
+    originalPrice: '$149.99',
     timeLeft: '2h 15m',
   },
   {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad',
-    title: 'Bluetooth Speaker',
-    price: '$79',
-    originalPrice: '$129',
-    timeLeft: '3h 45m',
-  },
-  {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb',
-    title: 'Fitness Band',
-    price: '$49',
-    originalPrice: '$89',
+    id: '2',
+    image: 'https://images.unsplash.com/photo-1605348532760-6753d2c43329',
+    title: 'Sport Shoes',
+    price: '$59.99',
+    originalPrice: '$99.99',
     timeLeft: '1h 30m',
   },
 ];
 
 const popularProducts = [
   {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30',
-    title: 'Premium Watch',
-    price: '$299',
-    rating: 4.8,
-    reviews: 245,
+    id: '1',
+    image: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa',
+    title: 'Nike Air Max 270',
+    price: '$150',
+    rating: '4.8',
+    reviews: '2.5k',
   },
   {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
-    title: 'Wireless Headphones',
-    price: '$199',
-    rating: 4.6,
-    reviews: 189,
+    id: '2',
+    image: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5',
+    title: 'Adidas UltraBoost',
+    price: '$180',
+    rating: '4.7',
+    reviews: '1.8k',
   },
   {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1625772452859-1c03d5bf1137',
-    title: 'Smart Ring',
-    price: '$159',
-    rating: 4.7,
-    reviews: 156,
+    id: '3',
+    image: 'https://images.unsplash.com/photo-1587563871167-1ee9c731aefb',
+    title: 'Puma RS-X',
+    price: '$110',
+    rating: '4.5',
+    reviews: '956',
   },
 ];
 
 const newArrivals = [
   {
-    id: 1,
-    image: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d',
-    title: 'Running Shoes',
-    price: '$89',
+    id: '1',
+    image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2',
+    title: 'Nike Air Force 1 Shadow',
+    price: '$120',
     isNew: true,
   },
   {
-    id: 2,
-    image: 'https://images.unsplash.com/photo-1542496658-e33a6d0d50f6',
-    title: 'Laptop Backpack',
-    price: '$49',
+    id: '2',
+    image: 'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519',
+    title: 'Adidas NMD R1',
+    price: '$140',
     isNew: true,
   },
   {
-    id: 3,
-    image: 'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08',
-    title: 'Wireless Earbuds',
-    price: '$79',
+    id: '3',
+    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a',
+    title: 'Nike React Vision',
+    price: '$160',
     isNew: true,
   },
 ];
 
 const specialOffers = [
   {
-    id: 1,
+    id: '1',
     title: 'Summer Sale',
-    description: 'Up to 50% off on summer collection',
-    backgroundColor: '#22C55E',
-    image: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a',
+    description: 'Get up to 50% off on selected summer collection',
+    image: 'https://images.unsplash.com/photo-1588117305388-c2631a279f82',
+    backgroundColor: '#FEF3C7',
   },
   {
-    id: 2,
-    title: 'New User Offer',
-    description: 'Get 20% off on your first purchase',
-    backgroundColor: '#6366F1',
-    image: 'https://images.unsplash.com/photo-1607083206869-4c7672e72a8a',
-  },
-];
-
-const notifications = [
-  {
-    id: 1,
-    title: 'Flash Sale Started!',
-    message: 'Don\'t miss out on our biggest sale of the year.',
-    time: '2 hours ago',
-    unread: true,
-  },
-  {
-    id: 2,
-    title: 'Order Shipped',
-    message: 'Your order #12345 has been shipped.',
-    time: '1 day ago',
-    unread: false,
-  },
-  {
-    id: 3,
-    title: 'New Arrival',
-    message: 'Check out our latest collection of summer wear.',
-    time: '2 days ago',
-    unread: false,
+    id: '2',
+    title: 'New Season',
+    description: 'Check out our latest autumn collection',
+    image: 'https://images.unsplash.com/photo-1595341888016-a392ef81b7de',
+    backgroundColor: '#DBEAFE',
   },
 ];
 
 export default function HomeScreen() {
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [isNotificationsVisible, setIsNotificationsVisible] = useState(false);
+  const [isSearchModalVisible, setSearchModalVisible] = React.useState(false);
+  const [isNotificationsModalVisible, setNotificationsModalVisible] = React.useState(false);
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Header 
-          onSearchPress={() => setIsSearchVisible(true)}
-          onNotificationsPress={() => setIsNotificationsVisible(true)}
-        />
-        
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" />
+      
+      <Header 
+        onSearchPress={() => setSearchModalVisible(true)}
+        onNotificationsPress={() => setNotificationsModalVisible(true)}
+      />
+
+      <ScrollView 
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <FeaturedCarousel products={featuredProducts} />
         
-        <Categories 
-          categories={categories}
-          onSeeAll={() => {}}
-        />
-        
-        <FlashDeals 
-          deals={flashDeals}
-          onSeeAll={() => {}}
-        />
-        
-        <Newsletter onSubscribe={() => {}} />
-        
-        <PopularProducts 
-          products={popularProducts}
-          onSeeAll={() => {}}
-        />
-        
-        <NewArrivals 
-          products={newArrivals}
-          onSeeAll={() => {}}
-        />
-        
-        <SpecialOffers offers={specialOffers} />
-        
+        <View style={styles.section}>
+          <Categories categories={categories} />
+        </View>
+
+        <View style={styles.section}>
+          <FlashDeals deals={flashDeals} onSeeAll={() => {}} />
+        </View>
+
+        <View style={styles.section}>
+          <PopularProducts products={popularProducts} onSeeAll={() => {}} />
+        </View>
+
+        <View style={styles.section}>
+          <NewArrivals products={newArrivals} onSeeAll={() => {}} />
+        </View>
+
+        <View style={styles.section}>
+          <SpecialOffers offers={specialOffers} />
+        </View>
+
+        <View style={styles.section}>
+          <Newsletter />
+        </View>
+
         <Footer />
       </ScrollView>
 
       <SearchModal 
-        visible={isSearchVisible}
-        onClose={() => setIsSearchVisible(false)}
+        visible={isSearchModalVisible}
+        onClose={() => setSearchModalVisible(false)}
       />
-      
+
       <NotificationsModal 
-        visible={isNotificationsVisible}
-        onClose={() => setIsNotificationsVisible(false)}
+        visible={isNotificationsModalVisible}
+        onClose={() => setNotificationsModalVisible(false)}
       />
     </SafeAreaView>
   );
@@ -225,5 +190,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  section: {
+    marginVertical: 20,
   },
 });

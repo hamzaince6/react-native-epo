@@ -12,18 +12,24 @@ interface FlashDeal {
 }
 
 interface FlashDealsProps {
-  deals: FlashDeal[];
-  onSeeAll: () => void;
+  deals?: FlashDeal[];
+  onSeeAll?: () => void;
 }
 
-export const FlashDeals = ({ deals, onSeeAll }: FlashDealsProps) => {
+export const FlashDeals = ({ deals = [], onSeeAll }: FlashDealsProps) => {
+  if (deals.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Flash Deals</Text>
-        <Pressable onPress={onSeeAll}>
-          <Text style={styles.seeAll}>See All</Text>
-        </Pressable>
+        {onSeeAll && (
+          <Pressable onPress={onSeeAll}>
+            <Text style={styles.seeAll}>See All</Text>
+          </Pressable>
+        )}
       </View>
       <ScrollView 
         horizontal 
@@ -69,29 +75,31 @@ const styles = StyleSheet.create({
   },
   seeAll: {
     fontSize: 14,
-    fontWeight: '600',
     color: '#22C55E',
+    fontWeight: '600',
   },
   dealsScroll: {
     paddingHorizontal: 16,
-    gap: 24,
-    paddingVertical: 16,
+    gap: 16,
   },
   dealItem: {
     width: 200,
     backgroundColor: '#fff',
-    borderRadius: 15,
+    borderRadius: 12,
+    overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowRadius: 3,
+    elevation: 3,
   },
   dealImage: {
     width: '100%',
     height: 150,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
+    resizeMode: 'cover',
   },
   dealContent: {
     padding: 12,
@@ -100,16 +108,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#1F2937',
+    marginBottom: 8,
   },
   dealPriceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
     gap: 8,
+    marginBottom: 8,
   },
   dealPrice: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: '700',
     color: '#22C55E',
   },
   dealOriginalPrice: {
@@ -120,11 +129,11 @@ const styles = StyleSheet.create({
   dealTimeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 8,
     gap: 4,
   },
   dealTime: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#EF4444',
+    fontWeight: '500',
   },
 });

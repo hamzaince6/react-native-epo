@@ -10,10 +10,14 @@ interface SpecialOffer {
 }
 
 interface SpecialOffersProps {
-  offers: SpecialOffer[];
+  offers?: SpecialOffer[];
 }
 
-export const SpecialOffers = ({ offers }: SpecialOffersProps) => {
+export const SpecialOffers = ({ offers = [] }: SpecialOffersProps) => {
+  if (offers.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
@@ -31,7 +35,10 @@ export const SpecialOffers = ({ offers }: SpecialOffersProps) => {
               <Text style={styles.shopNowText}>Shop Now</Text>
             </Pressable>
           </View>
-          <Image source={{ uri: offer.image }} style={styles.offerImage} />
+          <Image 
+            source={{ uri: offer.image }} 
+            style={styles.offerImage}
+          />
         </Pressable>
       ))}
     </View>

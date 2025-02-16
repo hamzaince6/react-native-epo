@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, Pressable, Image, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 
 interface NewArrival {
   id: string;
@@ -10,18 +11,24 @@ interface NewArrival {
 }
 
 interface NewArrivalsProps {
-  products: NewArrival[];
-  onSeeAll: () => void;
+  products?: NewArrival[];
+  onSeeAll?: () => void;
 }
 
-export const NewArrivals = ({ products, onSeeAll }: NewArrivalsProps) => {
+export const NewArrivals = ({ products = [], onSeeAll }: NewArrivalsProps) => {
+  if (products.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>New Arrivals</Text>
-        <Pressable onPress={onSeeAll}>
-          <Text style={styles.seeAll}>See All</Text>
-        </Pressable>
+        {onSeeAll && (
+          <Pressable onPress={onSeeAll}>
+            <Text style={styles.seeAll}>See All</Text>
+          </Pressable>
+        )}
       </View>
       <ScrollView 
         horizontal 
@@ -29,18 +36,24 @@ export const NewArrivals = ({ products, onSeeAll }: NewArrivalsProps) => {
         contentContainerStyle={styles.arrivalsScroll}
       >
         {products.map((product) => (
-          <Pressable key={product.id} style={styles.arrivalItem}>
-            <Image source={{ uri: product.image }} style={styles.arrivalImage} />
-            {product.isNew && (
-              <View style={styles.newBadge}>
-                <Text style={styles.newBadgeText}>NEW</Text>
+          <Link
+            key={product.id}
+            href={`/product/${product.id}`}
+            asChild
+          >
+            <Pressable style={styles.arrivalItem}>
+              <Image source={{ uri: product.image }} style={styles.arrivalImage} />
+              {product.isNew && (
+                <View style={styles.newBadge}>
+                  <Text style={styles.newBadgeText}>NEW</Text>
+                </View>
+              )}
+              <View style={styles.arrivalContent}>
+                <Text style={styles.arrivalTitle}>{product.title}</Text>
+                <Text style={styles.arrivalPrice}>{product.price}</Text>
               </View>
-            )}
-            <View style={styles.arrivalContent}>
-              <Text style={styles.arrivalTitle}>{product.title}</Text>
-              <Text style={styles.arrivalPrice}>{product.price}</Text>
-            </View>
-          </Pressable>
+            </Pressable>
+          </Link>
         ))}
       </ScrollView>
     </View>
@@ -65,56 +78,58 @@ const styles = StyleSheet.create({
   },
   seeAll: {
     fontSize: 14,
-    fontWeight: '600',
     color: '#22C55E',
+    fontWeight: '600',
   },
   arrivalsScroll: {
     paddingHorizontal: 16,
-    gap: 24,
-    paddingVertical: 16,
+    gap: 16,
   },
   arrivalItem: {
-    width: 160,
+    width: 180,
     backgroundColor: '#fff',
     borderRadius: 12,
+    overflow: 'hidden',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowRadius: 3,
+    elevation: 3,
   },
   arrivalImage: {
     width: '100%',
-    height: 160,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  newBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: '#22C55E',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-  },
-  newBadgeText: {
-    color: '#fff',
-    fontSize: 10,
-    fontWeight: '600',
+    height: 180,
+    resizeMode: 'cover',
   },
   arrivalContent: {
     padding: 12,
   },
   arrivalTitle: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '600',
     color: '#1F2937',
+    marginBottom: 8,
   },
   arrivalPrice: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: '#22C55E',
-    marginTop: 4,
+  },
+  newBadge: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: '#22C55E',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+  newBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
   },
 });

@@ -13,27 +13,34 @@ interface PopularProduct {
 }
 
 interface PopularProductsProps {
-  products: PopularProduct[];
-  onSeeAll: () => void;
+  products?: PopularProduct[];
+  onSeeAll?: () => void;
 }
 
-export const PopularProducts = ({ products, onSeeAll }: PopularProductsProps) => {
+export const PopularProducts = ({ products = [], onSeeAll }: PopularProductsProps) => {
+  if (products.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Most Popular</Text>
-        <Pressable onPress={onSeeAll}>
-          <Text style={styles.seeAll}>See All</Text>
-        </Pressable>
+        {onSeeAll && (
+          <Pressable onPress={onSeeAll}>
+            <Text style={styles.seeAll}>See All</Text>
+          </Pressable>
+        )}
       </View>
+      
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.popularScroll}
       >
         {products.map((product) => (
-          <Link
-            key={product.id}
+          <Link 
+            key={product.id} 
             href={{
               pathname: "/product/[id]",
               params: { id: product.id }
@@ -41,11 +48,7 @@ export const PopularProducts = ({ products, onSeeAll }: PopularProductsProps) =>
             asChild
           >
             <Pressable style={styles.popularItem}>
-              <Image 
-                source={{ uri: product.image }} 
-                style={styles.popularImage}
-                contentFit="cover"
-              />
+              <Image source={{ uri: product.image }} style={styles.popularImage} contentFit="cover" />
               <View style={styles.popularContent}>
                 <Text style={styles.popularTitle}>{product.title}</Text>
                 <Text style={styles.popularPrice}>{product.price}</Text>

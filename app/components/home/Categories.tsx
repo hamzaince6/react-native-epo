@@ -1,40 +1,46 @@
 import React from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Category {
   id: string;
   name: string;
-  icon: any;
-  count: string;
+  icon: string;
+  image: string;
 }
 
 interface CategoriesProps {
-  categories: Category[];
-  onSeeAll: () => void;
+  categories?: Category[];
 }
 
-export const Categories = ({ categories, onSeeAll }: CategoriesProps) => {
+export const Categories = ({ categories = [] }: CategoriesProps) => {
+  if (categories.length === 0) {
+    return null;
+  }
+
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Categories</Text>
-        <Pressable onPress={onSeeAll}>
+        <Pressable>
           <Text style={styles.seeAll}>See All</Text>
         </Pressable>
       </View>
+      
       <ScrollView 
         horizontal 
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.categoriesScroll}
+        style={styles.scrollView}
       >
         {categories.map((category) => (
-          <Pressable key={category.id} style={styles.categoryItem}>
-            <View style={styles.categoryIcon}>
-              <Ionicons name={category.icon} size={24} color="#22C55E" />
+          <Pressable key={category.id} style={styles.category}>
+            <View style={styles.imageContainer}>
+              <Image 
+                source={{ uri: category.image }} 
+                style={styles.image}
+              />
             </View>
             <Text style={styles.categoryName}>{category.name}</Text>
-            <Text style={styles.categoryCount}>{category.count}</Text>
           </Pressable>
         ))}
       </ScrollView>
@@ -44,7 +50,7 @@ export const Categories = ({ categories, onSeeAll }: CategoriesProps) => {
 
 const styles = StyleSheet.create({
   section: {
-    paddingVertical: 40,
+    paddingVertical: 20,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -55,44 +61,36 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 20,
-    fontWeight: '700',
+    fontWeight: '600',
     color: '#1F2937',
   },
   seeAll: {
     fontSize: 14,
-    fontWeight: '600',
     color: '#22C55E',
+    fontWeight: '500',
   },
-  categoriesScroll: {
-    paddingHorizontal: 16,
-    gap: 24,
-    paddingVertical: 16,
+  scrollView: {
+    paddingLeft: 16,
   },
-  categoryItem: {
-    width: 120,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 15,
-    padding: 20,
+  category: {
+    marginRight: 16,
     alignItems: 'center',
   },
-  categoryIcon: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#DCFCE7',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 12,
+  imageContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: '#F3F4F6',
+    marginBottom: 8,
+    overflow: 'hidden',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
   categoryName: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 14,
     color: '#1F2937',
-    marginTop: 8,
-  },
-  categoryCount: {
-    fontSize: 12,
-    color: '#6B7280',
-    marginTop: 4,
+    fontWeight: '500',
   },
 });

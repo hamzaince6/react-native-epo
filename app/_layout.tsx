@@ -1,14 +1,11 @@
 import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { useColorScheme } from 'react-native';
 
 export default function RootLayout() {
   return (
-    <>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
+    </Stack>
   );
 }
